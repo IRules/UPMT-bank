@@ -17,6 +17,7 @@ export default function handler(
         async () => {
             return db.query(`SELECT * FROM transactions WHERE transactionId = "${transactionId}"`).then(
                 (result) => {
+                    //@ts-ignore
                     if (result[0].length > 0) {
                         return res.status(400).json({ outcome: "REJECTED" });
                     } else {
@@ -29,10 +30,12 @@ export default function handler(
                             async () => {
                                 return db.query(`SELECT * FROM accounts WHERE iban = "${creditorAccount.iban}"`).then(
                                     (result) => {
+                                        //@ts-ignore
                                         if (result[0].length === 0) {
                                             return res.status(400).json({ outcome: "REJECTED" });
                                         } else {
                                             console.log(instructedAmount.amount)
+                                            //@ts-ignore
                                             const balance = result[0][0].balance + instructedAmount.amount;
                                             db.update("accounts", {
                                                 iban: creditorAccount.iban,
