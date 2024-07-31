@@ -29,6 +29,7 @@ export default async function handler(
             if (result[0].length > 0) {
                 return res.status(400).json({outcome: "REJECTED"});
             } else {
+                res.status(200).json({outcome: "ACCEPTED"});
                 db.create("transactions", {
                     transactionId,
                     debtorAccount,
@@ -40,9 +41,9 @@ export default async function handler(
                             (result) => {
                                 //@ts-ignore
                                 if (result[0].length === 0) {
-                                    return res.status(400).json({outcome: "REJECTED"});
+                                    // return res.status(400).json({outcome: "REJECTED"});
+                                    return true;
                                 } else {
-                                    console.log(instructedAmount.amount)
                                     //@ts-ignore
                                     const balance = result[0][0].balance + instructedAmount.amount;
                                     db.update("accounts", {
@@ -50,7 +51,7 @@ export default async function handler(
                                         balance,
                                     }).then(
                                         () => {
-                                            return res.status(200).json({outcome: "ACCEPTED"});
+                                            return true;
                                         }
                                     )
                                 }
