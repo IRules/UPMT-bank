@@ -36,6 +36,7 @@ export default async function handler(
                     debtorAccount,
                     creditorAccount,
                     instructedAmount,
+                    timestamp: new Date()
                 }).then(
                     async () => {
                         return db.query(`SELECT * FROM accounts WHERE iban = "${creditorAccount.iban}"`).then(
