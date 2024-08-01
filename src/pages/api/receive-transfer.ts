@@ -36,9 +36,10 @@ export default async function handler(
                     debtorAccount,
                     creditorAccount,
                     instructedAmount,
-                    timestamp: new Date()
+                    timestamp: new Date(),
+                    status: "REJECTED"
                 }).then(
-                    async () => {
+                    async (transaction) => {
                         return db.query(`SELECT * FROM accounts WHERE iban = "${creditorAccount.iban}"`).then(
                             // @ts-ignore
                             (result) => {
@@ -54,7 +55,11 @@ export default async function handler(
                                         balance,
                                     }).then(
                                         () => {
-                                            res.status(200).json({outcome: "ACCEPTED"});
+                                            return db.update(transaction[0].id, {
+                                                status: "ACCEPTED"
+                                            }).then(() => {
+                                                res.status(200).json({outcome: "ACCEPTED"});
+                                            })
                                         }
                                     )
                                 }
