@@ -349,7 +349,7 @@ export default function Home() {
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
-                                    <Button>Add funds</Button>
+                                    <Button>Send money</Button>
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>

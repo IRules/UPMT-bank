@@ -6,7 +6,11 @@ const QRCodeScanner = () => {
     const [result, setResult] = useState("");
     const scannerRef = useRef(null);
 
+    const [init, setInit] = useState(false);
+
     useEffect(() => {
+        if(init) return;
+        setInit(true);
         if (scannerRef.current) {
             const html5QrCodeScanner = new Html5QrcodeScanner(
                 "qr-reader",
