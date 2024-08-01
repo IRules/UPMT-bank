@@ -48,7 +48,8 @@ export default async function handler(
                                 } else {
                                     //@ts-ignore
                                     const balance = result[0][0].balance + instructedAmount.amount;
-                                    return db.update("accounts", {
+                                    //@ts-ignore
+                                    return db.update(result[0][0].id, {
                                         iban: creditorAccount.iban,
                                         balance,
                                     }).then(
