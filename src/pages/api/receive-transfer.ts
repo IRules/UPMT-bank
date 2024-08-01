@@ -11,7 +11,7 @@ export default async function handler(
         return res.status(405).end();
     }
 
-    if (!db.status) {
+    if (!db.status || db.status === 'disconnected' || db.status === 'error') {
         await dbSession.then(
             (session) => {
                 console.log('Connected to SurrealDB');
@@ -23,6 +23,7 @@ export default async function handler(
             }
         );
     }
+
 
     const {transactionId, debtorAccount, creditorAccount, instructedAmount} = req.body;
     return db.query(`SELECT * FROM transactions WHERE transactionId = "${transactionId}"`).then(
