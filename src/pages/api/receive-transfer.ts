@@ -61,6 +61,7 @@ export default async function handler(
                 ).catch(
                     (error) => {
                         console.error('Failed to create transaction', error);
+                        return res.status(500).json({outcome: "REJECTED"});
                     }
                 )
             }
