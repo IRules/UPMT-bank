@@ -18,6 +18,7 @@ export default async function handler(
         ).catch(
             (error) => {
                 console.error('Failed to connect to SurrealDB', error);
+                return res.status(400).json({outcome: "REJECTED"});
             }
         );
     }
