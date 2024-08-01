@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from "next";
 import db, {dbSession} from "@/lib/surrealdb";
+import OAuth2 from "fetch-mw-oauth2";
 
 export default async function handler(
     req: NextApiRequest,
@@ -10,7 +11,7 @@ export default async function handler(
         return res.status(405).end();
     }
 
-    if(!db.status) {
+    if (!db.status) {
         await dbSession.then(
             (session) => {
                 console.log('Connected to SurrealDB');
@@ -30,7 +31,6 @@ export default async function handler(
             if (result[0].length > 0) {
                 return res.status(400).json({outcome: "REJECTED"});
             } else {
-                res.status(200).json({outcome: "ACCEPTED"});
                 db.create("transactions", {
                     transactionId,
                     debtorAccount,
@@ -39,20 +39,20 @@ export default async function handler(
                 }).then(
                     async () => {
                         return db.query(`SELECT * FROM accounts WHERE iban = "${creditorAccount.iban}"`).then(
+                            // @ts-ignore
                             (result) => {
                                 //@ts-ignore
                                 if (result[0].length === 0) {
-                                    // return res.status(400).json({outcome: "REJECTED"});
-                                    return true;
+                                    return res.status(400).json({outcome: "REJECTED"});
                                 } else {
                                     //@ts-ignore
                                     const balance = result[0][0].balance + instructedAmount.amount;
-                                    db.update("accounts", {
+                                    return db.update("accounts", {
                                         iban: creditorAccount.iban,
                                         balance,
                                     }).then(
                                         () => {
-                                            return true;
+                                            res.status(200).json({outcome: "ACCEPTED"});
                                         }
                                     )
                                 }
