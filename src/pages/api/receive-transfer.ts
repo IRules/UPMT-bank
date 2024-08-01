@@ -7,7 +7,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    console.log(req.headers)
     if (req.method !== "PUT") {
         return res.status(405).end();
     }
