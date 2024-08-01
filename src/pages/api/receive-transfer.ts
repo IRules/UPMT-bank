@@ -56,7 +56,8 @@ export default async function handler(
                                     }).then(
                                         () => {
                                             return db.update(transaction[0].id, {
-                                                status: "ACCEPTED"
+                                                status: "ACCEPTED",
+                                                ...transaction[0]
                                             }).then(() => {
                                                 res.status(200).json({outcome: "ACCEPTED"});
                                             })
