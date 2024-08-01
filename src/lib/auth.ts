@@ -6,8 +6,8 @@ export const logtoClient = new LogtoClient({
     endpoint: 'https://auth.upm8.dev/',
     appId: 'lc2mvq507ravxedt0fhwn',
     appSecret: 'z7Sy1mDye5G1HezHgDUaCZotK2botpUe',
-    baseUrl: 'http://localhost:3000',
-    // baseUrl: "http://192.168.16.70:3000",
+    // baseUrl: 'http://localhost:3000',
+    baseUrl: "https://localhost7456.irules.net/",
     cookieSecret: '1tCuQFvz1aHWDDfFhHUL7Pk8tdqsmqbP',
     cookieSecure: process.env.NODE_ENV === 'production',
 });

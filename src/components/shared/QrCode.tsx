@@ -1,30 +1,46 @@
 "use client";
-// components/QRCodeScanner.js
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-
-// Dynamically import QrReader component only
-const QrReader = dynamic(
-  () => import("react-qr-reader").then((mod) => mod.QrReader),
-  { ssr: false }
-);
+import React, { useEffect, useRef, useState } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 const QRCodeScanner = () => {
-  const [result, setResult] = useState("");
+    const [result, setResult] = useState("");
+    const scannerRef = useRef(null);
 
-  const handleScan = (data: any) => {
-    if (data) {
-      setResult(data.text); // Extract the text property from the scanned data
-    }
-  };
+    useEffect(() => {
+        if (scannerRef.current) {
+            const html5QrCodeScanner = new Html5QrcodeScanner(
+                "qr-reader",
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 },
+                },
+                /* verbose= */ false
+            );
 
-  return (
-    <div>
-      <h1>QR Code Scanner</h1>
-      <QrReader onResult={handleScan} />
-      <p>Scanned QR Code: {result}</p>
-    </div>
-  );
+            html5QrCodeScanner.render(
+                (decodedText, decodedResult) => {
+                    setResult(decodedText);
+                },
+                (errorMessage) => {
+                    console.error(errorMessage);
+                }
+            );
+
+            return () => {
+                html5QrCodeScanner.clear().catch(error => {
+                    console.error("Failed to clear QR Code scanner", error);
+                });
+            };
+        }
+    }, []);
+
+    return (
+        <div>
+            <h1>QR Code Scanner</h1>
+            <div id="qr-reader" ref={scannerRef}></div>
+            <p>Scanned QR Code: {result}</p>
+        </div>
+    );
 };
 
 export default QRCodeScanner;

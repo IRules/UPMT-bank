@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import {useQRCode} from "next-qrcode";
 import GeneratePDF from "@/components/shared/GeneratePDF";
+import QRCodeScanner from "@/components/shared/QrCode";
 
 
 const inter = Inter({subsets: ["latin"]});
@@ -344,6 +345,7 @@ export default function Home() {
                                 <DialogHeader>
                                     <DialogTitle>Scan your friends QR Code</DialogTitle>
                                     <DialogDescription className="p-5 flex flex-col gap-3 items-center">
+                                        <QRCodeScanner />
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
