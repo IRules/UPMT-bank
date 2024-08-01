@@ -7,7 +7,8 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== "PUT" || req.headers["api-key"] !== "bf12eed8-9bee-4ed2-a52d-c0e8d7489e6f") {
+    console.log(req.headers)
+    if (req.method !== "PUT") {
         return res.status(405).end();
     }
 
