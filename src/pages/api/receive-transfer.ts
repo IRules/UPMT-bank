@@ -58,8 +58,18 @@ export default async function handler(
                             }
                         )
                     }
+                ).catch(
+                    (error) => {
+                        console.error('Failed to create transaction', error);
+                    }
                 )
             }
+        }
+    ).catch(
+        (error) => {
+            console.error('Failed to query transactions', error);
+            return res.status(500).json({outcome: "REJECTED"}
+            );
         }
     )
 }
